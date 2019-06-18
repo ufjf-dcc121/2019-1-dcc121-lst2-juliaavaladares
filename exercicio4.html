@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Exercicio 4</title>
+</head>
+<body>
+        <div id = "formulario">
+            <table class="table table-hover table-dark">
+                <td>
+                    <form name="formAnimal">
+                        <div>
+                                <label>Animal: </label>
+                                <input type="text" name="nome" >
+                                <label>Altura: </label>
+                                <input type="text" name="altura" >
+                                <label>Peso: </label>
+                                <input type="number" step="0.01" name="peso" >
+                                <label>Velociade: </label>
+                                <input type="number" name="velocidade" >
+                                <label>Idade Máxima: </label>
+                                <input type="number" name="idade" >
+                        </div>
+
+                        <div>
+                            <input type="button" name="enviar" value="enviar">
+                        </div>
+
+                    </form>
+                </td>
+            </table>
+        </div>
+
+        <table id = "tabelaExibicao">
+                <thead>
+                        <th>Animal</th>
+                        <th>Altura</th>
+                        <th>Peso</th>
+                        <th>Velocidade</th>
+                        <th>Idade Maxima</th>
+                </thead>
+
+                <tbody id="valoresTabela"></tbody>
+                <tfoot>
+                    <tr>
+                        <th>Maiorais</th>
+                        <td id="maisAlto"></td>
+                        <td id="maisPesado"></td>
+                        <td id="maisVeloz"></td>
+                        <td id="maisVivido"></td>
+                    </tr>
+
+                    <tr>
+                            <th>Médias</th>
+                            <td id="alturaMedia"></td>
+                            <td id="pesoMedio"></td>
+                            <td id="velocidadeMedia"></td>
+                            <td id="idadeMedia"></td>
+                    </tr>
+                </tfoot>
+        </table>
+
+
+</body>
+</html>
