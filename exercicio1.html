@@ -19,6 +19,40 @@
         </div>
     </form>
     
+    <div>
+        <button id = "botaoAdiciona">Adicionar</button>
+        <button id =  "botaoLimpa">Limpar </button>
+    </div>
 
+    <ul id = "lista"></ul>
+    <p id = "avisos"></p>
+
+    <script>
+        var produtos = document.getElementById("lista");
+        var botaoAdd = document.getElementById("botaoAdiciona");
+        var botaoClear = document.getElementById("botaoLimpa");
+        var formList = document.forms.formularioCompras;
+        var qtd = formularioCompras.quantidade;
+        var product = formularioCompras.produto; 
+
+        botaoAdd.addEventListener("click", adicionaProduto);
+        botaoAdd.addEventListener("click", apagaLista);
+
+        function adicionaProduto(){
+            document.getElementById("avisos").innerText = "";
+            var newPrdct = document.createElement("li");
+            newPrdct.textContent = Number(qtd.value) + " unidades/kg de "+ product.value;
+            lista.appendChild(newPrdct);
+            formularioCompras.reset();
+        }
+        
+        function apagaLista (){
+            while(lista.childElementCount != 0){
+                lista.removeChild(lista.lastChild);
+            }
+            formularioCompras.reset();
+            document.getElementById("avisos").innerText = "Lista apagada!";
+        }
+    </script>
 </body>
 </html>
