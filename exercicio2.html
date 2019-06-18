@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Exercicio 2 </title>
+</head>
+<body>
+    <form name="formPilha">
+        <div>
+            <label>Valores: <input type="text" name = "valor"> </label>
+        </div>
+    </form>
+
+    <div>
+        <button id = "empilha">Empilha</button>
+        <button id = "desempilha">Desempilha</button>
+    </div>
+    <ol id = "lista"></ol>
+    <p id = "avisos"></p>
+
+    <script>
+        var pilha = [];
+        var listOrd = document.querySelector("lista");
+        var lista = document.getElementsByTagName("ol")[0];
+        var itens = lista.getElementsByTagName("li");
+        var botaoEmpilha = document.getElementById("empilha");
+        var botaoDesempilha = document.getElementById("desempilha");
+
+        botaoEmpilha.addEventListener("click", adicionaItem);
+        botaoDesempilha.addEventListener("click", removeItem);
+        
+        function adicionaItem(){
+            var val = document.forms.formPilha.valor.value;
+            if (val == "")
+                document.getElementById("avisos").innerText = "Item não adicionado, tente outro!";
+            else{
+                var novoValor = {"val" : val};
+                pilha.push(novoValor);
+                var novaLi = document.createElement("li");
+                novaLi.textContent = novoValor.val;
+                listOrd.appendChild(novaLi);
+                formPilha.reset();
+                document.getElementById("avisos").innerText = "";
+
+            }
+        }
+
+        function removeItem(){
+            if (lista.children.length > 0)
+                lista.removeChild(itens[Number(lista.children.length) - 1]);
+            else
+                document.getElementById("avisos").innerText = "Lista vazia!";
+        }
+    </script>
+    
+</body>
+</html>
