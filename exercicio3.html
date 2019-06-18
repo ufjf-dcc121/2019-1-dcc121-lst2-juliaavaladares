@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Exercicio 3</title>
+</head>
+<body>
+    <div id = "formularioExcursao">
+        <table border="1" style="width: 50%">
+            <td>
+                <form name ="dadosParticipantes" align= "center" >
+                    <h1> Dados do Participante: </h1>
+                    <div>
+                        <label>Nome: <input type="text" name="nome"> </label>
+                        <label>Idade: <input type="text" name="idade"> </label>
+                    </div>
+                    
+                    <div align="center">
+                        <input type="button" value="Enviar" name="enviar">
+                        <input type="hidden" value="Excluir" name="excluir">
+                    </div>
+                </form>
+            </td>
+        </table>
+    </div>
+
+    <div id = "lista">
+        <table border = "1" style="width: 50%">
+            <td>
+                <ul> Adultos: <span id="qtdAdultos"></span> </ul>
+                <ul id="adultos"></ul>
+            </td>
+        </table>
+
+        <table border = "1" style="width: 50%">
+                <td>
+                    <ul> Estudantes: <span id="qtdEstudantes"></span> </ul>
+                    <ul id="estudantes"></ul>
+                </td>
+            </table>        
+    </div>
+
+    <h4>Total de participantes: <span id="total"></span></h4>
+    <h2 id="avisos"></h2>
+
+    <script>
+        var listAdult = document.getElementById("adultos");
+        var listEst = document.getElementById("estudantes");
+        var totPart = document.getElementById("total");
+
+        var formEntrada = document.forms.dadosParticipantes;
+        var adiciona = formEntrada.enviar;
+        var exclui = formEntrada.excluir;
+
+        var q1 = document.getElementById("qtdAdultos");
+        var q2 = document.getElementById("qtdEstudantes");
+        var tot;
+
+        adiciona.addEventListener("click", adicionaParticipante);
+        exclui.addEventListener("click", excluiParticipante);
+        
+        function adicionaParticipante(){
+            var nome = formEntrada.nome.value;
+            var idade = formEntrada.idade.value;
+            var inscrito = { "nome": nome, "idade": idade }
+            var novoElemento = document.createElement("novoElemento");
+            var stringAux = '<input type="checkbox" name="selecao" id="selecao">';
+
+            novoElemento.innerHTML = stringAux + inscrito.nome + " - " + inscrito.idade + " anos" + " <br> ";
+            novoElemento.addEventListener("click", function () { editacampo(novoElemento) });
+            
+            if (nome == "" || idade == "") {
+                document.getElementById("avisos").innerText = "Item não adicionado, tente novamente!";
+            }
+
+            else if (Number(idade) >= 18) {
+                document.getElementById("avisos").innerText = "";
+                listAdult.appendChild(novoElemento);
+                q1.textContent = listAdult.childElementCount;
+            }
+            else {
+                document.getElementById("avisos").innerText = "";
+                listEst.appendChild(novoElemento);
+                q2.textContent = listEst.childElementCount;
+            }
+
+            
+            totPart.textContent = listAdult.childElementCount + listEst.childElementCount;
+            
+            formEntrada.nome.focus();
+            formEntrada.reset();
+
+        }
+    
+        function excluiParticipante(){
+            ckList = document.querySelectorAll("input[type=checkbox]:checked");
+            ckList.forEach(function (el) {
+                el.parentElement.remove();
+            });
+
+            q1.textContent = listAdult.childElementCount;
+            q2.textContent = listEst.childElementCount;
+            totPart.textContent = listAdult.childElementCount + listEst.childElementCount;
+
+        }
+
+        function editacampo(novoElemento) {
+            exc.type = "button";
+            novoElemento.style.color = "blue";
+            novoElemento.contentEditable = "true";
+            setTimeout(function () {
+                novoElemento.style.color = "black";
+                novoElemento.contentEditable = "false";
+            }, 7000);
+        }
+    </script>
+
+</body>
+</html>
