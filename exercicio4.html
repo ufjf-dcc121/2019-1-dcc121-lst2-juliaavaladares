@@ -1,67 +1,199 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Exercicio 4</title>
+    <title>Questão 4 - Coleção de Animais</title>
 </head>
+
 <body>
-        <div id = "formulario">
-            <table class="table table-hover table-dark">
-                <td>
-                    <form name="formAnimal">
-                        <div>
-                                <label>Animal: </label>
-                                <input type="text" name="nome" >
-                                <label>Altura: </label>
-                                <input type="text" name="altura" >
-                                <label>Peso: </label>
-                                <input type="number" step="0.01" name="peso" >
-                                <label>Velociade: </label>
-                                <input type="number" name="velocidade" >
-                                <label>Idade Máxima: </label>
-                                <input type="number" name="idade" >
-                        </div>
-
-                        <div>
-                            <input type="button" name="enviar" value="enviar">
-                        </div>
-
-                    </form>
-                </td>
-            </table>
-        </div>
-
-        <table id = "tabelaExibicao">
-                <thead>
-                        <th>Animal</th>
-                        <th>Altura</th>
-                        <th>Peso</th>
-                        <th>Velocidade</th>
-                        <th>Idade Maxima</th>
-                </thead>
-
-                <tbody id="valoresTabela"></tbody>
-                <tfoot>
-                    <tr>
-                        <th>Maiorais</th>
-                        <td id="maisAlto"></td>
-                        <td id="maisPesado"></td>
-                        <td id="maisVeloz"></td>
-                        <td id="maisVivido"></td>
-                    </tr>
-
-                    <tr>
-                            <th>Médias</th>
-                            <td id="alturaMedia"></td>
-                            <td id="pesoMedio"></td>
-                            <td id="velocidadeMedia"></td>
-                            <td id="idadeMedia"></td>
-                    </tr>
-                </tfoot>
+    <!-- Tabela em que o usuário irá preencher os campos referentes as informações de cada animal -->
+    <div id="formulario">
+        <table border="3" if="tabelaCampos">
+            <td>
+                <form name="formDados">
+                    <div>
+                        <label>Animal: <input type="text" name="cAnimal"> </label>
+                        <label>Altura: <input type="number" step="0.01" name="cAltura"> </label>
+                        <label>Peso: <input type="number" step="0.01" name="cPeso"> </label>
+                        <label>Velocidade: <input type="number" name="cVel"> </label>
+                        <label>Idade Máxima: <input type="number" name="cIdade"> </label>
+                    </div>
+                    <div>
+                        <input type="button" name="enviar" value="enviar">
+                    </div>
+                </form>
+            </td>
         </table>
+    </div>
+    <br>
+    <!-- Tabela para exibir os dados de medias e valores maximos calculados no script -->
+    <table border="3" id="tabelaExibicao">
+        <thead>
+            <thead>
+                <th>Animal</th>
+                <th>Altura</th>
+                <th>Peso</th>
+                <th>Velocidade</th>
+                <th>Idade Maxima</th>
+            </thead>
+        <tbody id="valorestabela"> </tbody>
+        <tfoot>
+            <tr>
+                <th>Maiorais</th>
+                <td id="maisAlto"></td>
+                <td id="maisPesado"></td>
+                <td id="maisVeloz"></td>
+                <td id="maisVivido"></td>
+            </tr>
+            <tr>
+                <th>Médias</th>
+                <td id="mAltura"></td>
+                <td id="mPeso"></td>
+                <td id="mVelo"></td>
+                <td id="mIdade"></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <h4>Animais acima da média de peso:</h4>
+    <ul id="acimaMedia"></ul>
+
+    <!-- Avisos para caso o usuário digita valores errados ou nulos -->
+    <h2 id="avisos"> </h2>
+
+
+    <script>
+        //Referencias Principais do Fomulario
+        var formEntrada = document.forms.formDados;
+        var botaoAdd = formEntrada.enviar;
+        var lstAcimaMedia = document.getElementById("acimaMedia");
+        var maiorPeso = 0, maiorIdade = 0, maiorAltura = 0, maiorVeloci = 0,
+            alturaTotal = 0, pesoTotal = 0, velocidadeTotal = 0, idadeTotal = 0;
+        //Referencias da tabela de exibição MAX
+        alturaMAX = document.getElementById("maisAlto");
+        pesoMAX = document.getElementById("maisPesado");
+        velMAX = document.getElementById("maisVeloz");
+        idadMAX = document.getElementById("maisVivido");
+        //Referencias da tabela de exibição MEDIAS
+        alturaMD = document.getElementById("mAltura");
+        pesoMD = document.getElementById("mPeso");
+        velMD = document.getElementById("mVelo");
+        idadMD = document.getElementById("mIdade");
+        //Eventos
+        botaoAdd.addEventListener("click", addAnimal);
+        //Função que adiciona novos animais a partir do formulario de entrada
+        function addAnimal() {
+            //Referencias a posiçoes do formulario
+            var nomeAnimal = formEntrada.cAnimal;
+            var altura = formEntrada.cAltura;
+            var peso = formEntrada.cPeso;
+            var vel = formEntrada.cVel;
+            var idad = formEntrada.cIdade;
+            //Referencias da tabela de preenchimento
+            var tabelaBody = document.getElementsByTagName("tbody")[1];
+            var tabelaAltura = document.getElementById("cAltura");
+            var tabelaPeso = document.getElementById("cPeso");
+            var tabelaVel = document.getElementById("cVel");
+            var tabelaIdad = document.getElementById("cIdade");
+            // Verifica se os campos são nulos, se sim, avisa o usuário
+            if (nomeAnimal.value == "" || altura.value == "" || peso.value == "" || vel.value == "" || idad.value == "") {
+                document.getElementById("avisos").innerText = "Não foi possível adicionar o item, tente novamente!";
+            } //Caso Não sejam nulos, prossegue com os calculos e atualização da tabela
+            else {
+                document.getElementById("avisos").innerText = "";
+                //Novas Linhas da Matriz/tabela
+                var acAnimal = document.createElement("td");
+                var acAltura = document.createElement("td");
+                var acPeso = document.createElement("td");
+                var acVel = document.createElement("td");
+                var acIdad = document.createElement("td");
+                var brLine = document.createElement("tr");
+                //Adicionando dados dos campos da tabela 1
+                acAnimal.innerText = nomeAnimal.value;
+                acAltura.innerText = altura.value;
+                acPeso.innerText = peso.value;
+                acVel.innerText = vel.value;
+                acIdad.innerText = idad.value;
+                //Atualizando dados das linhas da tabela 2
+                brLine.appendChild(acAnimal);
+                brLine.appendChild(acAltura);
+                brLine.appendChild(acPeso);
+                brLine.appendChild(acVel);
+                brLine.appendChild(acIdad);
+                tabelaBody.appendChild(brLine);
+                //Contador de linhas da tabela
+                var linhasTabela = tabelaBody.getElementsByTagName("tr");
+                //Atualiza valores de Totais
+                alturaTotal += parseInt(acAltura.innerHTML);
+                pesoTotal += parseInt(acPeso.innerHTML);
+                velocidadeTotal += parseInt(acVel.innerHTML);
+                idadeTotal += parseInt(acIdad.innerHTML);
+                
+                //Chama as funçoes de calculo - Separei assim para organizar o codigo
+                calcMax();
+                calcMedia();
+                aboveMD();
+                formEntrada.reset();
+            }
+            //Calcula os valores Maximos das informações passadas dos animais e os exibe na tabela
+            function calcMax() {
+                if (altura.value > maiorAltura) {
+                    maiorAltura = altura.value;
+                    alturaMAX.innerHTML = acAnimal.innerHTML;
+                }
+                if (peso.value > maiorPeso) {
+                    maiorPeso = peso.value;
+                    pesoMAX.innerHTML = acAnimal.innerHTML;
+                }
+                if (vel.value > maiorVeloci) {
+                    maiorVeloci = vel.value;
+                    velMAX.innerHTML = acAnimal.innerHTML;
+                }
+                if (idad.value > maiorIdade) {
+                    maiorIdade = idad.value;
+                    idadMAX.innerHTML = acAnimal.innerHTML;
+                }
+            }
+            //Calcula os valores Medios das informações passadas do animal e as exibe na tabela
+            function calcMedia() {
+                alturaMD.innerText = alturaTotal / linhasTabela.length;
+                pesoMD.innerText = pesoTotal / linhasTabela.length;
+                velMD.innerText = velocidadeTotal / linhasTabela.length;
+                idadMD.innerText = idadeTotal / linhasTabela.length;
+            }
+            //Encontra os maiores valores que a media de peso e exibe os animais mais pesados
+            function aboveMD() {
+                var novaLinhaLista = document.createElement("li");
+                lstAcimaMedia.innerText = "";
+                for (var i = 0; i < linhasTabela.length; i++) {
+                    var nomeAnimal = linhasTabela[i].getElementsByTagName("td")[0].innerText;
+                    var peso = linhasTabela[i].getElementsByTagName("td")[2].innerText;
+                    //Verifica se o peso atual do animal é maior que a media de peso
+                    if (parseInt(peso) > (pesoTotal / linhasTabela.length)) {
+                        novaLinhaLista.innerText = nomeAnimal;
+                        lstAcimaMedia.appendChild(novaLinhaLista);
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        label {
+            display: inline-block;
+            float: left;
+            clear: both;
+            width: 300px;
+            text-align: left;
+        }
+        input {
+            display: inline-block;
+            float: right;
+        }
+    </style>
 
 
 </body>
+
 </html>
